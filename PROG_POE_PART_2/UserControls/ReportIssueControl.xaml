@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="PROG_POE_PART_2.UserControls.ReportIssueControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PROG_POE_PART_2.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid>
+        <Grid.Background>
+            <SolidColorBrush Color="#FFB6C899"/>
+        </Grid.Background>
+        <ProgressBar x:Name="CompletionPrograsssBar" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="822"/>
+        <Label x:Name="label" Content="REPORT ISSUE" VerticalAlignment="Top" FontFamily="Bahnschrift Light" FontSize="48" Margin="246,35,0,0" HorizontalAlignment="Left" Width="351"/>
+        <Label x:Name="label1" Content="Enter Location:" HorizontalAlignment="Left" Margin="0,135,0,426" FontFamily="Berlin Sans FB Demi" FontSize="24" FontWeight="Bold" Width="197"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="253,86,0,0" Width="301" Height="373">
+            <Label x:Name="locationErrorlbl" Content="" Margin="0,10,0,0" FontWeight="Bold" FontStyle="Italic" Foreground="Black"/>
+            <TextBox x:Name="locationTxt" Text="" Margin="0,10,0,0" Foreground="Gray" Height="43" FontWeight="Bold"/>
+            <Label x:Name="categoryErrorlbl" Content="" Margin="0,10,0,0" FontWeight="Bold" FontStyle="Italic" Foreground="Red"/>
+            <ComboBox x:Name="CategoryCmbx" Margin="0,10,0,0" SelectionChanged="CategoryCmbx_SelectionChanged" Height="42">
+                <ComboBoxItem Content="Select Category" IsSelected="True" IsEnabled="False"/>
+            </ComboBox>
+            <Label x:Name="descriptionErrorlbl" Content="" Margin="0,10,0,0" FontWeight="Bold" FontStyle="Italic" Foreground="Red"/>
+            <TextBox x:Name="descriptionTxt" Text="" Margin="0,10,0,0" Height="69" TextWrapping="Wrap" AcceptsReturn="True" Foreground="Gray" FontWeight="Bold"/>
+        </StackPanel>
+        <Label x:Name="label1_Copy" Content="Select Category:" HorizontalAlignment="Left" Margin="5,226,0,334" FontFamily="Berlin Sans FB Demi" FontSize="24" FontWeight="Bold" Width="208"/>
+        <Label x:Name="label1_Copy1" Content="Enter Description:" HorizontalAlignment="Left" Margin="9,325,0,232" FontFamily="Berlin Sans FB Demi" FontSize="24" FontWeight="Bold" Width="222"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="601,153,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="183" Width="165">
+            <WrapPanel x:Name="Pictures" Orientation="Vertical"/>
+        </ScrollViewer>
+        <Label x:Name="uploadMessagelbl" Content="" HorizontalAlignment="Left" Margin="600,119,0,455" FontWeight="Bold" FontStyle="Italic" Foreground="#FFFFF900" Width="164"/>
+        <ProgressBar x:Name="UploadProgressBar" HorizontalAlignment="Left" Margin="605,347,0,236" Width="161" RenderTransformOrigin="0.726,-2.243"/>
+        <Button x:Name="AddPictureBtn" Content="Add Pic/Doc🖼️" HorizontalAlignment="Left" Margin="626,375,0,194" FontWeight="Bold" Click="AddPictureBtn_Click" Width="116"/>
+        <Button x:Name="SubmitBtn" Content="Submit👍" HorizontalAlignment="Left" Margin="662,538,0,25" FontWeight="Bold" FontSize="16" Click="SubmitBtn_Click" Background="#FF0CF600" Width="91"/>
+        <Button x:Name="ClearBtn" Content="Clear🗑️" HorizontalAlignment="Left" Margin="553,538,0,24" FontWeight="Bold" FontSize="16" Click="ClearBtn_Click" Width="91" Background="#FFE0FF00" RenderTransformOrigin="0.467,0.605"/>
+        <Button x:Name="InforBtn" Content="" HorizontalAlignment="Left" Margin="485,536,0,19" Foreground="#FF030303" Click="InforBtn_Click" Width="49">
+            <Button.Background>
+                <ImageBrush ImageSource="/Images/QuestionMarkIcon.png" Stretch="Uniform"/>
+            </Button.Background>
+        </Button>
+        <Label x:Name="informationlbl" HorizontalAlignment="Left" Margin="7,443,0,8" FontStyle="Italic" Foreground="Blue" Width="444"/>
+    </Grid>
+</UserControl>
