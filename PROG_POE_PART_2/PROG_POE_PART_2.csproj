@@ -183,5 +183,10 @@
   <ItemGroup>
     <Resource Include="Images\QuestionMarkIcon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DocumentsIcon.png" />
+    <Resource Include="Images\PdfIcon.png" />
+    <Resource Include="Images\WordIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

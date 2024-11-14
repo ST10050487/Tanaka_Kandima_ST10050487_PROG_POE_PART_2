@@ -169,7 +169,6 @@ namespace PROG_POE_PART_2.UserControls
         }
         //****************************************************************NAKA*********************************************************//
         // Method to process files and update progress bar
-        // Method to process files and update progress bar
         private void ProcessFiles(string[] filePaths)
         {
             for (int i = 0; i < filePaths.Length; i++)
@@ -192,35 +191,69 @@ namespace PROG_POE_PART_2.UserControls
                         picturesList.Add(filePath);
                     });
                 }
-                else
+                else if (extension == ".pdf" || extension == ".doc" || extension == ".docx" || extension == ".txt" || extension == ".xls" || extension == ".xlsx" || extension == ".ppt" || extension == ".pptx")
                 {
-                    // Add document to the list
+                    // Create a StackPanel to hold the icon and filename
                     Dispatcher.Invoke(() =>
                     {
+                        StackPanel docPanel = new StackPanel
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Margin = new Thickness(5)
+                        };
+
+                        // Create an Image control for the icon
+                        Image icon = new Image
+                        {
+                            Width = 50,
+                            Height = 50,
+                            Margin = new Thickness(5)
+                        };
+
+                        // Set icon source based on file type
+                        if (extension == ".pdf")
+                        {
+                            icon.Source = new BitmapImage(new Uri("pack://application:,,,/Images/PdfIcon.png"));
+                        }
+                        else if (extension == ".doc" || extension == ".docx")
+                        {
+                            icon.Source = new BitmapImage(new Uri("pack://application:,,,/PROG_POE_PART_2;component/Images/WordIcon.png"));
+                        }
+                        else
+                        {
+                            icon.Source = new BitmapImage(new Uri("pack://application:,,,/Images/DocumentsIcon.png"));
+                        }
+
+                        // Create a TextBlock for the file name
+                        TextBlock documentLabel = new TextBlock
+                        {
+                            Text = System.IO.Path.GetFileName(filePath),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Foreground = new SolidColorBrush(Colors.Blue),
+                            Margin = new Thickness(5, 0, 0, 0)
+                        };
+
+                        // Add event handler to open document on click
+                        documentLabel.MouseLeftButtonUp += (s, ev) =>
+                        {
+                            System.Diagnostics.Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                        };
+
+                        // Add icon and file name to the StackPanel
+                        docPanel.Children.Add(icon);
+                        docPanel.Children.Add(documentLabel);
+
+                        // Add the StackPanel to the WrapPanel
+                        Pictures.Children.Add(docPanel);
                         documentsList.Add(filePath);
-
-                        TextBlock documentLabel = new TextBlock();
-                        documentLabel.Text = System.IO.Path.GetFileName(filePath);
-                        documentLabel.Margin = new Thickness(5);
-                        documentLabel.Foreground = new SolidColorBrush(Colors.Blue);
-
-                        documentLabel.MouseLeftButtonUp += (s, ev) => System.Diagnostics.Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
-                        Pictures.Children.Add(documentLabel);
                     });
                 }
-                // Making the progress bar visible
+
+                // Update progress bar
                 Dispatcher.Invoke(() =>
                 {
                     UploadProgressBar.Visibility = Visibility.Visible;
-                });
-                // Update the progress bar
-                Dispatcher.Invoke(() =>
-                {
                     UploadProgressBar.Value = i + 1;
-                });
-                // Displaying the number of files uploaded
-                Dispatcher.Invoke(() =>
-                {
                     uploadMessagelbl.Content = $"Uploaded {i + 1} of {filePaths.Length} files";
                 });
             }
@@ -279,13 +312,20 @@ namespace PROG_POE_PART_2.UserControls
         // A method to display and hide instructions on how submit a report
         private void InforBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(informationlbl.Content.ToString()))
+            if (informationlbl != null)
             {
-                Information();
+                if (string.IsNullOrEmpty(informationlbl.Content?.ToString()) || informationlbl.Content.ToString().Equals(""))
+                {
+                    Information();
+                }
+                else
+                {
+                    informationlbl.Content = "";
+                }
             }
             else
             {
-                informationlbl.Content = "";
+                Information();
             }
         }
         //****************************************************************NAKA*********************************************************//
