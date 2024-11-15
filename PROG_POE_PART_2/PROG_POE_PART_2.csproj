@@ -188,5 +188,8 @@
     <Resource Include="Images\PdfIcon.png" />
     <Resource Include="Images\WordIcon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\VideoIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

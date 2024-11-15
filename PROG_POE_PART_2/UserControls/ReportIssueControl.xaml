@@ -55,9 +55,11 @@
 
         <!-- ScrollViewer for Pictures -->
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="2"
-                      Margin="10" VerticalAlignment="Top" Height="183">
+              Margin="10" VerticalAlignment="Top" Height="183">
             <WrapPanel x:Name="Pictures" Orientation="Vertical"/>
         </ScrollViewer>
+
+
 
         <!-- Upload Message Label and Upload Progress Bar -->
         <Label x:Name="uploadMessagelbl" Content="" FontWeight="Bold" FontStyle="Italic" Foreground="#FFFFF900"

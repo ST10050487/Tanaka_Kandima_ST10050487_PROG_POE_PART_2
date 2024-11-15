@@ -145,25 +145,23 @@ namespace PROG_POE_PART_2.UserControls
         //A method to get the Images
         private void AddPictureBtn_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Multiselect = true;
-            openFileDialog.Filter = "Image and Document Files|*.jpg;*.jpeg;*.png;*.bmp;*.pdf;*.doc;*.docx;*.xls;*.xlsx;*.txt|All Files|*.*";
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Multiselect = true,
+                Filter = "Image files (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp|Document files (*.pdf;*.doc;*.docx;*.xls;*.xlsx;*.txt)|*.pdf;*.doc;*.docx;*.xls;*.xlsx;*.txt|Video files (*.mp4;*.avi;*.mov)|*.mp4;*.avi;*.mov|All files (*.*)|*.*"
+            };
 
-            // Use WPF's true/false check
             if (openFileDialog.ShowDialog() == true)
             {
                 string[] filePaths = openFileDialog.FileNames;
 
-                // Clear existing images, documents, and progress bar
                 Pictures.Children.Clear();
                 picturesList.Clear();
                 documentsList.Clear();
                 UploadProgressBar.Value = 0;
 
-                // Set progress bar maximum value to the number of files to be processed
                 UploadProgressBar.Maximum = filePaths.Length;
 
-                // Process files asynchronously
                 Task.Run(() => ProcessFiles(filePaths));
             }
         }
@@ -176,86 +174,207 @@ namespace PROG_POE_PART_2.UserControls
                 string filePath = filePaths[i];
                 string extension = System.IO.Path.GetExtension(filePath).ToLower();
 
-                if (extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".bmp")
+                Dispatcher.Invoke(() =>
                 {
-                    // Add image to the UI
-                    Dispatcher.Invoke(() =>
+                    StackPanel itemPanel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(5) };
+                    TextBlock fileNameTextBlock = new TextBlock
                     {
-                        Image image = new Image();
-                        image.Source = new BitmapImage(new Uri(filePath));
-                        image.Width = 100;
-                        image.Height = 100;
-                        image.Margin = new Thickness(5);
+                        Text = System.IO.Path.GetFileName(filePath),
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Margin = new Thickness(5)
+                    };
 
-                        Pictures.Children.Add(image);
-                        picturesList.Add(filePath);
-                    });
-                }
-                else if (extension == ".pdf" || extension == ".doc" || extension == ".docx" || extension == ".txt" || extension == ".xls" || extension == ".xlsx" || extension == ".ppt" || extension == ".pptx")
-                {
-                    // Create a StackPanel to hold the icon and filename
-                    Dispatcher.Invoke(() =>
+                    if (extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".bmp")
                     {
-                        StackPanel docPanel = new StackPanel
+                        // Handle image files
+                        Image image = new Image
                         {
-                            Orientation = Orientation.Horizontal,
+                            Source = new BitmapImage(new Uri(filePath)),
+                            Width = 100,
+                            Height = 100,
                             Margin = new Thickness(5)
                         };
-
-                        // Create an Image control for the icon
-                        Image icon = new Image
+                        Button removeButton = new Button
                         {
+                            Content = "Remove",
+                            Tag = filePath,
+                            Margin = new Thickness(5),
+                            Background = new SolidColorBrush(Colors.Red)
+                        };
+                        removeButton.Click += RemoveItem_Click;
+                        itemPanel.Children.Add(image);
+                        itemPanel.Children.Add(fileNameTextBlock);
+                        itemPanel.Children.Add(removeButton);
+                        Pictures.Children.Add(itemPanel);
+                        picturesList.Add(filePath);
+                    }
+                    else if (extension == ".pdf" || extension == ".doc" || extension == ".docx" || extension == ".txt" || extension == ".xls" || extension == ".xlsx")
+                    {
+                        // Handle document files
+                        DisplayDocumentIcon(filePath, extension);
+                    }
+                    else if (extension == ".mp4" || extension == ".avi" || extension == ".mov")
+                    {
+                        // Handle video files
+                        Image videoIcon = new Image
+                        {
+                            Source = new BitmapImage(new Uri("pack://application:,,,/Images/VideoIcon.png")),
                             Width = 50,
                             Height = 50,
                             Margin = new Thickness(5)
                         };
 
-                        // Set icon source based on file type
-                        if (extension == ".pdf")
+                        fileNameTextBlock.Foreground = new SolidColorBrush(Colors.Green);
+                        fileNameTextBlock.MouseLeftButtonUp += (s, ev) =>
                         {
-                            icon.Source = new BitmapImage(new Uri("pack://application:,,,/Images/PdfIcon.png"));
-                        }
-                        else if (extension == ".doc" || extension == ".docx")
-                        {
-                            icon.Source = new BitmapImage(new Uri("pack://application:,,,/PROG_POE_PART_2;component/Images/WordIcon.png"));
-                        }
-                        else
-                        {
-                            icon.Source = new BitmapImage(new Uri("pack://application:,,,/Images/DocumentsIcon.png"));
-                        }
-
-                        // Create a TextBlock for the file name
-                        TextBlock documentLabel = new TextBlock
-                        {
-                            Text = System.IO.Path.GetFileName(filePath),
-                            VerticalAlignment = VerticalAlignment.Center,
-                            Foreground = new SolidColorBrush(Colors.Blue),
-                            Margin = new Thickness(5, 0, 0, 0)
+                            Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
                         };
 
-                        // Add event handler to open document on click
-                        documentLabel.MouseLeftButtonUp += (s, ev) =>
+                        Button removeButton = new Button
                         {
-                            System.Diagnostics.Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                            Content = "Remove",
+                            Tag = filePath,
+                            Margin = new Thickness(5),
+                            Background = new SolidColorBrush(Colors.Red)
                         };
+                        removeButton.Click += RemoveItem_Click;
 
-                        // Add icon and file name to the StackPanel
-                        docPanel.Children.Add(icon);
-                        docPanel.Children.Add(documentLabel);
+                        itemPanel.Children.Add(videoIcon);
+                        itemPanel.Children.Add(fileNameTextBlock);
+                        itemPanel.Children.Add(removeButton);
+                        Pictures.Children.Add(itemPanel);
+                    }
 
-                        // Add the StackPanel to the WrapPanel
-                        Pictures.Children.Add(docPanel);
-                        documentsList.Add(filePath);
-                    });
-                }
-
-                // Update progress bar
-                Dispatcher.Invoke(() =>
-                {
                     UploadProgressBar.Visibility = Visibility.Visible;
                     UploadProgressBar.Value = i + 1;
                     uploadMessagelbl.Content = $"Uploaded {i + 1} of {filePaths.Length} files";
                 });
+            }
+        }
+
+        //****************************************************************NAKA*********************************************************//
+        // Method to display document icon
+        private void DisplayDocumentIcon(string filePath, string extension)
+        {
+            StackPanel docPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(5)
+            };
+
+            Image icon = new Image
+            {
+                Width = 50,
+                Height = 50,
+                Margin = new Thickness(5)
+            };
+
+            if (extension == ".pdf")
+            {
+                icon.Source = new BitmapImage(new Uri("pack://application:,,,/Images/PdfIcon.png"));
+            }
+            else if (extension == ".doc" || extension == ".docx")
+            {
+                icon.Source = new BitmapImage(new Uri("pack://application:,,,/PROG_POE_PART_2;component/Images/WordIcon.png"));
+            }
+            else
+            {
+                icon.Source = new BitmapImage(new Uri("pack://application:,,,/Images/DocumentsIcon.png"));
+            }
+
+            TextBlock documentLabel = new TextBlock
+            {
+                Text = System.IO.Path.GetFileName(filePath),
+                VerticalAlignment = VerticalAlignment.Center,
+                Foreground = new SolidColorBrush(Colors.Blue),
+                Margin = new Thickness(5, 0, 0, 0)
+            };
+
+            documentLabel.MouseLeftButtonUp += (s, ev) =>
+            {
+                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+            };
+
+            Button removeButton = new Button
+            {
+                Content = "Remove",
+                Tag = filePath,
+                Margin = new Thickness(5),
+                Background = new SolidColorBrush(Colors.Red)
+            };
+            removeButton.Click += RemoveItem_Click;
+
+            docPanel.Children.Add(icon);
+            docPanel.Children.Add(documentLabel);
+            docPanel.Children.Add(removeButton);
+
+            Pictures.Children.Add(docPanel);
+            documentsList.Add(filePath);
+        }
+        //****************************************************************NAKA*********************************************************//
+        // Method to remove an item from the list
+        private void RemoveItem_Click(object sender, RoutedEventArgs e)
+        {
+            Button removeButton = sender as Button;
+            if (removeButton != null)
+            {
+                string filePath = removeButton.Tag as string;
+                if (!string.IsNullOrEmpty(filePath))
+                {
+                    picturesList.Remove(filePath);
+                    documentsList.Remove(filePath);
+                    UpdatePicturesDisplay();
+                }
+            }
+        }
+        //****************************************************************NAKA*********************************************************//
+        // Method to update the pictures display
+        private void UpdatePicturesDisplay()
+        {
+            Pictures.Children.Clear();
+            foreach (var filePath in picturesList)
+            {
+                StackPanel itemPanel = new StackPanel { Orientation = Orientation.Horizontal };
+                Image image = new Image
+                {
+                    Source = new BitmapImage(new Uri(filePath)),
+                    Width = 100,
+                    Height = 100,
+                    Margin = new Thickness(5)
+                };
+                Button removeButton = new Button
+                {
+                    Content = "Remove",
+                    Tag = filePath,
+                    Margin = new Thickness(5),
+                    Background = new SolidColorBrush(Colors.Red)
+                };
+                removeButton.Click += RemoveItem_Click;
+                itemPanel.Children.Add(image);
+                itemPanel.Children.Add(removeButton);
+                Pictures.Children.Add(itemPanel);
+            }
+            foreach (var filePath in documentsList)
+            {
+                StackPanel itemPanel = new StackPanel { Orientation = Orientation.Horizontal };
+                TextBlock textBlock = new TextBlock
+                {
+                    Text = System.IO.Path.GetFileName(filePath),
+                    Width = 100,
+                    Height = 100,
+                    Margin = new Thickness(5)
+                };
+                Button removeButton = new Button
+                {
+                    Content = "Remove",
+                    Tag = filePath,
+                    Margin = new Thickness(5),
+                    Background = new SolidColorBrush(Colors.Red)
+                };
+                removeButton.Click += RemoveItem_Click;
+                itemPanel.Children.Add(textBlock);
+                itemPanel.Children.Add(removeButton);
+                Pictures.Children.Add(itemPanel);
             }
         }
         //****************************************************************NAKA*********************************************************//
