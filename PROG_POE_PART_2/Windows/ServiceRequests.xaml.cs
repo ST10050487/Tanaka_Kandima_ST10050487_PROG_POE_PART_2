@@ -1,7 +1,4 @@
-﻿using PROG_POE_PART_2.Classes;
-using PROG_POE_PART_2.Windows;
-using PROG_POE_PART_2.UserControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,13 +15,13 @@ using System.Windows.Shapes;
 namespace PROG_POE_PART_2.Windows
 {
     /// <summary>
-    /// Interaction logic for EventsAndAnnouncements.xaml
+    /// Interaction logic for ServiceRequests.xaml
     /// </summary>
-    public partial class EventsAndAnnouncements : Window
+    public partial class ServiceRequests : Window
     {
-        public EventsAndAnnouncements()
+        public ServiceRequests()
         {
-            InitializeComponent();  
+            InitializeComponent();
         }
         // A method to move the window
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

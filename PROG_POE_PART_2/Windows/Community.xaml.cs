@@ -75,6 +75,13 @@ namespace PROG_POE_PART_2.Windows
             this.Close();
             community.Show();
         }
-      
+        //A method to navigate to the ServiceRequests window
+        private void NavigateToServiceRequests(object sender, RoutedEventArgs e)
+        {
+            ServiceRequests serviceRequests = new ServiceRequests();
+            this.Close();
+            serviceRequests.Show();
+        }
+
     }
 }

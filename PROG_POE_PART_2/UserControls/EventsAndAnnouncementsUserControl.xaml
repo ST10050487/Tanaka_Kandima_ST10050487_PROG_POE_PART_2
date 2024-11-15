@@ -46,8 +46,6 @@
             </ListView.ItemTemplate>
         </ListView>
         <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="564,48,0,0" TextWrapping="Wrap" Text="Announcements" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Width="184" Height="26"/>
-
-
         <ListView x:Name="announcementsList" ItemsSource="{Binding Announcements}" Margin="433,143,6,4" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -72,5 +70,3 @@
         <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="464,86,0,0" TextWrapping="Wrap" Text="Filter Announcements by Date Range:" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="311"/>
     </Grid>
 </UserControl>
-
-

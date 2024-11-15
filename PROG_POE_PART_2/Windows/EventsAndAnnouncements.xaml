@@ -6,13 +6,12 @@
         xmlns:local="clr-namespace:PROG_POE_PART_2.Windows"
         xmlns:UserControls="clr-namespace:PROG_POE_PART_2.UserControls" x:Class="PROG_POE_PART_2.Windows.EventsAndAnnouncements"
         mc:Ignorable="d"
-                Title="MainWindow" Height="600" Width="900" ResizeMode="NoResize" Topmost="True" WindowStyle="None" 
-        WindowStartupLocation="CenterScreen" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+                Title="MainWindow"     ResizeMode="CanResize"
+    WindowStartupLocation="CenterScreen"
+    MouseLeftButtonDown="Window_MouseLeftButtonDown" WindowStyle="None">
 
     <Window.Resources>
-        <!--//Toggle Button Style Template-->
         <ImageBrush x:Key="imgBrush" ImageSource="/Images/Menu.png"/>
-        <!--//Text font Style//-->
         <Style x:Key="fontStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="Arial"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -20,7 +19,7 @@
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
-        <!--//Tool Tip Style//-->
+
         <Style x:Key="ttStyle" TargetType="{x:Type ToolTip}">
             <Setter Property="Placement" Value="Right"/>
             <Setter Property="Height" Value="40"/>
@@ -37,6 +36,7 @@
             <Setter Property="HasDropShadow" Value="True"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
+
         <Style x:Key="tbStyle" TargetType="{x:Type ToggleButton}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -58,157 +58,136 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid>
-        <Grid Background="black">
-            <!--//Background Image//-->
-            <Grid x:Name ="background">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*"/>
-                    <ColumnDefinition Width="41*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.Background>
-                    <ImageBrush  Stretch="Fill"/>
-                </Grid.Background>
-                <UserControls:EventsAndAnnouncementsUserControl HorizontalAlignment="Left" Margin="74,0,0,0" VerticalAlignment="Center" Grid.ColumnSpan="2" Width="821"/>
-            </Grid>
-            <Grid x:Name="navPanl1" HorizontalAlignment="Left" Width="70" Background="#2E333A">
-                <StackPanel x:Name="stPnl1">
-                    <!--//Grid for the Menu Toggle Button//-->
-                    <Grid Height="90">
-                        <!--//Menu title text//-->
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="73,-20,0,0" Text="M E N U" Foreground="White" FontSize="22"
-                                   Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource fontStyle}">
-                            <!--//Shadow Effect//-->
-                            <TextBlock.Effect>
-                                <DropShadowEffect  BlurRadius="10" ShadowDepth="1" Direction="-90" Color="White"/>
-                            </TextBlock.Effect>
-                        </TextBlock>
-                        <!--//Toggle Button//-->
-                        <ToggleButton x:Name="tgBtn" Grid.Column="0" VerticalAlignment="Center" 
-                         HorizontalAlignment="Left" Margin="18,20,0,0" Height="30" Width="30"
-                        BorderThickness="0" Style="{StaticResource tbStyle}">
-                            <ToggleButton.Background>
-                                <ImageBrush ImageSource="/Images/Menu.png"/>
-                            </ToggleButton.Background>
-                            <ToggleButton.Triggers>
-                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                    <BeginStoryboard>
-                                        <Storyboard x:Name="HideStackPanel">
-                                            <DoubleAnimation Storyboard.TargetName="navPanl1" Storyboard.TargetProperty="Width"
-                                             From="230" To="65" Duration="0:0:0.2"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                                <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                    <BeginStoryboard>
-                                        <Storyboard x:Name="ShowStackPanel">
-                                            <DoubleAnimation Storyboard.TargetName="navPanl1" Storyboard.TargetProperty="Width"
-                                             BeginTime="0:0:0" From="65" To="230" Duration="0:0:0.3"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </ToggleButton.Triggers>
-                        </ToggleButton>
-                    </Grid>
-                    <!--//List of Menu Items-->
-                    <ListView x:Name="LV" Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <!--//Listview Items style template-->
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListViewItem}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                            <Border x:Name="Bd" Height="50" BorderBrush="{TemplateBinding BorderBrush}"
-                                                    BorderThickness="{TemplateBinding BorderThickness}" 
-                                                    Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"
-                                                    SnapsToDevicePixels="False">
-                                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <MultiTrigger>
-                                                    <MultiTrigger.Conditions>
-                                                        <Condition Property="IsMouseOver" Value="True"/>
-                                                    </MultiTrigger.Conditions>
-                                                    <Setter Property="Background" TargetName="Bd" Value="#404D5B"/>
-                                                    <Setter Property="BorderBrush" TargetName="Bd" Value="#404D5B"/>
-                                                </MultiTrigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <!--//Home//-->
-                        <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" Selected="NavigateToHomeScreen">
-                            <!--//Tool Tip-->
-                            <ListViewItem.ToolTip>
-                                <ToolTip x:Name="tt_home" Content="Home" Style="{StaticResource ttStyle}"/>
-                            </ListViewItem.ToolTip>
-                            <StackPanel Orientation="Horizontal" Width="230">
-                                <Image Source="/Images/HomeIcon.png" Width="50" Height="50"/>
-                                <TextBlock Text="Home" Margin="25,0,0,0" Style="{StaticResource fontStyle}"/>
-                            </StackPanel>
-                        </ListViewItem>
-                        <!--//Report Issues-->
-                        <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" Selected="NavigateToReportIssue">
-                            <!--//Tool Tip-->
-                            <ListViewItem.ToolTip>
-                                <ToolTip x:Name="tt_report" Content="Report Issues" Style="{StaticResource ttStyle}"/>
-                            </ListViewItem.ToolTip>
-                            <StackPanel Orientation="Horizontal" Width="230">
-                                <Image Source="/Images/ReportIssues.png" Width="50" Height="50"/>
-                                <TextBlock Text="Report Issues" Margin="25,0,0,0" Style="{StaticResource fontStyle}"/>
-                            </StackPanel>
-                        </ListViewItem>
-                        <!--//Events and Announcements//-->
-                        <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" Selected="NavigateToEventsAndAnnouncements">
-                            <!--//Tool Tip-->
-                            <ListViewItem.ToolTip>
-                                <ToolTip x:Name="tt_events" Content="Local Events and Announcements" Style="{StaticResource ttStyle}"/>
-                            </ListViewItem.ToolTip>
-                            <StackPanel Orientation="Horizontal" Width="230">
-                                <Image Source="/Images/EventsAndAnnounmentsIcon.png"  Width="50" Height="50" Margin="12,0,0,0"/>
-                                <TextBlock Text="Events/Announcements" FontSize="14" Margin="25,0,0,0" Style="{StaticResource fontStyle}" Height="22" Width="143"/>
-                            </StackPanel>
-                        </ListViewItem>
-                        <!--//Service Request Status//-->
-                        <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter">
-                            <!--//Tool Tip-->
-                            <ListViewItem.ToolTip>
-                                <ToolTip x:Name="tt_service" Content="Service Request Status" Style="{StaticResource ttStyle}"/>
-                            </ListViewItem.ToolTip>
-                            <StackPanel Orientation="Horizontal" Width="230">
-                                <Image Source="/Images/ServiceRequestStatusIcon.png"  Width="50" Height="50"/>
-                                <TextBlock Text="Service Request Status" Margin="25,0,0,0" Style="{StaticResource fontStyle}"/>
-                            </StackPanel>
-                        </ListViewItem>
-                        <!--//Community//-->
-                        <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" Selected="NavigateToCommunity">
-                            <!--//Tool Tip-->
-                            <ListViewItem.ToolTip>
-                                <ToolTip x:Name="tt_community" Content="Community" Style="{StaticResource ttStyle}"/>
-                            </ListViewItem.ToolTip>
-                            <StackPanel Orientation="Horizontal" Width="230">
-                                <Image Source="/Images/UserFeedBackIcon.png" Width="50" Height="50" Margin="12,0,0,0"/>
-                                <TextBlock Text="Community" Margin="25,0,0,0" Style="{StaticResource fontStyle}"/>
-                            </StackPanel>
-                        </ListViewItem>
-                        <!--//Log Out//-->
-                        <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" Selected="ListViewItem_Selected" >
-                            <!--//Tool Tip-->
-                            <ListViewItem.ToolTip>
-                                <ToolTip x:Name="tt_logout" Content="Log Out" Style="{StaticResource ttStyle}"/>
-                            </ListViewItem.ToolTip>
-                            <StackPanel Orientation="Horizontal" Width="230">
-                                <Image Source="/Images/LogOutIcon.png"  Width="50" Height="50"/>
-                                <TextBlock Text="Log Out" Margin="25,0,0,0" Style="{StaticResource fontStyle}"/>
-                            </StackPanel>
-                        </ListViewItem>
-                    </ListView>
-                </StackPanel>
-            </Grid>
+
+    <Grid Background="Black">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Navigation Panel -->
+        <Grid x:Name="navPanl1" HorizontalAlignment="Left" Width="70" Background="#2E333A">
+            <StackPanel x:Name="stPnl1">
+                <!-- Menu Title -->
+                <TextBlock Margin="10,20,0,0" Text="M E N U" Foreground="White" FontSize="22" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource fontStyle}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="1" Direction="-90" Color="White"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+
+                <!-- Menu Toggle Button -->
+                <ToggleButton x:Name="tgBtn" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="18,20,0,0" Height="30" Width="30" BorderThickness="0" Style="{StaticResource tbStyle}">
+                    <ToggleButton.Background>
+                        <ImageBrush ImageSource="/Images/Menu.png"/>
+                    </ToggleButton.Background>
+                    <ToggleButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                            <BeginStoryboard>
+                                <Storyboard x:Name="HideStackPanel">
+                                    <DoubleAnimation Storyboard.TargetName="navPanl1" Storyboard.TargetProperty="Width" From="230" To="70" Duration="0:0:0.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard>
+                                <Storyboard x:Name="ShowStackPanel">
+                                    <DoubleAnimation Storyboard.TargetName="navPanl1" Storyboard.TargetProperty="Width" From="70" To="230" Duration="0:0:0.3"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ToggleButton.Triggers>
+                </ToggleButton>
+
+                <!-- ListView for Menu Items -->
+                <ListView x:Name="LV" Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                        <Border x:Name="Bd" Height="50" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="False">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="Background" TargetName="Bd" Value="#404D5B"/>
+                                                <Setter Property="BorderBrush" TargetName="Bd" Value="#404D5B"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <!-- Menu Items -->
+                    <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" Selected="NavigateToHomeScreen">
+                        <ListViewItem.ToolTip>
+                            <ToolTip x:Name="tt_home" Content="Home" Style="{StaticResource ttStyle}"/>
+                        </ListViewItem.ToolTip>
+                        <StackPanel Orientation="Horizontal" Width="230">
+                            <Image Source="/Images/HomeIcon.png" Width="50" Height="50"/>
+                            <TextBlock Text="Home" Margin="25,0,0,0" Style="{StaticResource fontStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <!-- Report Issues Item-->
+                    <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" Selected="NavigateToReportIssue">
+                        <ListViewItem.ToolTip>
+                            <ToolTip x:Name="tt_report" Content="Report Issues" Style="{StaticResource ttStyle}"/>
+                        </ListViewItem.ToolTip>
+                        <StackPanel Orientation="Horizontal" Width="230">
+                            <Image Source="/Images/ReportIssues.png" Width="50" Height="50"/>
+                            <TextBlock Text="Report Issues" Margin="25,0,0,0" Style="{StaticResource fontStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <!-- Events and Announments-->
+                    <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" Selected="NavigateToEventsAndAnnouncements">
+                        <ListViewItem.ToolTip>
+                            <ToolTip x:Name="tt_events" Content="Events and Announcements" Style="{StaticResource ttStyle}"/>
+                        </ListViewItem.ToolTip>
+                        <StackPanel Orientation="Horizontal" Width="230">
+                            <Image Source="/Images/EventsAndAnnounmentsIcon.png" Width="50" Height="50"/>
+                            <TextBlock Text="Events and Announcements" Margin="25,0,0,0" Style="{StaticResource fontStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <!-- Service Request Status-->
+                    <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" Selected="NavigateToServiceRequests">
+                        <ListViewItem.ToolTip>
+                            <ToolTip x:Name="tt_service" Content="Service Request Status" Style="{StaticResource ttStyle}"/>
+                        </ListViewItem.ToolTip>
+                        <StackPanel Orientation="Horizontal" Width="230">
+                            <Image Source="/Images/ServiceRequestStatusIcon.png" Width="50" Height="50"/>
+                            <TextBlock Text="Service Request Status" Margin="25,0,0,0" Style="{StaticResource fontStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <!-- Community-->
+                    <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" Selected="NavigateToCommunity">
+                        <ListViewItem.ToolTip>
+                            <ToolTip x:Name="tt_community" Content="Community" Style="{StaticResource ttStyle}"/>
+                        </ListViewItem.ToolTip>
+                        <StackPanel Orientation="Horizontal" Width="230">
+                            <Image Source="/Images/UserFeedbackIcon.png" Width="50" Height="50"/>
+                            <TextBlock Text="Community" Margin="25,0,0,0" Style="{StaticResource fontStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <!-- Logout-->
+                    <ListViewItem HorizontalAlignment="Left" Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" Selected="ListViewItem_Selected">
+                        <ListViewItem.ToolTip>
+                            <ToolTip x:Name="tt_logout" Content="Logout" Style="{StaticResource ttStyle}"/>
+                        </ListViewItem.ToolTip>
+                        <StackPanel Orientation="Horizontal" Width="230">
+                            <Image Source="/Images/LogoutIcon.png" Width="50" Height="50"/>
+                            <TextBlock Text="Logout" Margin="25,0,0,0" Style="{StaticResource fontStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+            </StackPanel>
         </Grid>
+
+        <!-- Responsive HomeScreen UserControl -->
+        <UserControls:EventsAndAnnouncementsUserControl Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0"/>
     </Grid>
 </Window>

@@ -55,18 +55,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\BinarySearchTree.cs" />
     <Compile Include="Classes\CustomPriorityQueue.cs" />
+    <Compile Include="Classes\ServiceRequest.cs" />
+    <Compile Include="Classes\ServiceRequestNode.cs" />
     <Compile Include="UserControls\CommunityControl.xaml.cs">
       <DependentUpon>CommunityControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ReportIssueControl.xaml.cs">
       <DependentUpon>ReportIssueControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ServiceRequestControl.xaml.cs">
+      <DependentUpon>ServiceRequestControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Community.xaml.cs">
       <DependentUpon>Community.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ReportIssue.xaml.cs">
       <DependentUpon>ReportIssue.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ServiceRequests.xaml.cs">
+      <DependentUpon>ServiceRequests.xaml</DependentUpon>
     </Compile>
     <Page Include="UserControls\CommunityControl.xaml">
       <SubType>Designer</SubType>
@@ -81,6 +90,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ReportIssueControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ServiceRequestControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -120,6 +133,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Windows\ReportIssue.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ServiceRequests.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

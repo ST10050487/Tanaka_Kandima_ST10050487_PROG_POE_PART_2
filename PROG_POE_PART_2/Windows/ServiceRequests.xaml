@@ -1,12 +1,12 @@
-﻿<Window
+﻿<Window x:Class="PROG_POE_PART_2.Windows.ServiceRequests"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:UserControls="clr-namespace:PROG_POE_PART_2.UserControls"
         xmlns:local="clr-namespace:PROG_POE_PART_2.Windows"
-        xmlns:UserControls="clr-namespace:PROG_POE_PART_2.UserControls" x:Class="PROG_POE_PART_2.Windows.ReportIssue"
         mc:Ignorable="d"
-        Title="ReportIssue"  ResizeMode="CanResize"
+        Title="ServiceRequests" ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
         MouseLeftButtonDown="Window_MouseLeftButtonDown" WindowStyle="None">
 
@@ -188,6 +188,6 @@
         </Grid>
 
         <!-- Responsive HomeScreen UserControl -->
-        <UserControls:ReportIssueControl Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0"/>
+        <UserControls:ServiceRequestControl Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0"/>
     </Grid>
 </Window>
