@@ -11,10 +11,12 @@ namespace PROG_POE_PART_2.Classes
         public ServiceRequest Data { get; set; }
         public ServiceRequestNode Left { get; set; }
         public ServiceRequestNode Right { get; set; }
+        public int Height { get; set; }
 
         public ServiceRequestNode(ServiceRequest data)
         {
             Data = data;
+            Height = 1;
         }
     }
 }
