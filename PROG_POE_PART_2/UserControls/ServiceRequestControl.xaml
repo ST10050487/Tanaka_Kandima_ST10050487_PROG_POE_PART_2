@@ -42,7 +42,7 @@
                         Content="Search" 
                         Width="100" 
                         Margin="0,0,10,0" 
-                        VerticalAlignment="Center" />
+                        VerticalAlignment="Center" Click="btnSearch_Click_1" />
                 <ComboBox x:Name="cmbFilterStatus" 
                           Width="150" 
                           VerticalAlignment="Center"
@@ -50,26 +50,58 @@
                     <ComboBoxItem Content="All" IsSelected="True"/>
                     <ComboBoxItem Content="Pending"/>
                     <ComboBoxItem Content="In Progress"/>
-                    <ComboBoxItem Content="Completed"/>
+                    <ComboBoxItem Content="Resolved"/>
+                    <ComboBoxItem Content="Closed"/>
                 </ComboBox>
                 <Button x:Name="btnFilter" 
                         Content="Apply Filter" 
                         Width="120" 
                         Margin="10,0,0,0" 
-                        VerticalAlignment="Center" />
+                        VerticalAlignment="Center" Click="btnFilter_Click_1" />
             </StackPanel>
 
             <!-- ListView to Display Service Requests -->
             <ListView x:Name="listViewServiceRequests" Grid.Row="1" Margin="0" BorderBrush="Gray" BorderThickness="1">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}" />
-                        <GridViewColumn Header="Description" Width="300" DisplayMemberBinding="{Binding Description}" />
-                        <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Status}" />
-                        <GridViewColumn Header="Created At" Width="150" DisplayMemberBinding="{Binding CreatedAt}" />
-                        <GridViewColumn Header="Completed At" Width="150" DisplayMemberBinding="{Binding CompletedAt}" />
-                    </GridView>
-                </ListView.View>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Margin="10" Padding="10">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" />
+                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="14" />
+                                <TextBlock Text="{Binding Status}" FontWeight="Bold" FontSize="14" Foreground="Blue" Margin="0,10,0,0" />
+                                <TextBlock Text="Images:" FontWeight="Bold" Margin="0,10,0,0" />
+                                <ItemsControl ItemsSource="{Binding Images}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Image Source="{Binding}" Width="100" Height="100" Margin="5" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Text="Documents:" FontWeight="Bold" Margin="0,10,0,0" />
+                                <ItemsControl ItemsSource="{Binding Documents}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" Foreground="Blue" TextDecorations="Underline" Cursor="Hand" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Text="Videos:" FontWeight="Bold" Margin="0,10,0,0" />
+                                <ItemsControl ItemsSource="{Binding Videos}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <MediaElement Source="{Binding}" Width="200" Height="150" Margin="5" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </Grid>
     </Grid>

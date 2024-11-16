@@ -60,9 +60,13 @@ namespace PROG_POE_PART_2.UserControls
         private List<string> picturesList = new List<string>();
         // List to store paths of documents
         List<string> documentsList = new List<string>();
+        // Shared collection of service requests
+        public static List<ServiceRequest> SharedServiceRequests = new List<ServiceRequest>();
         //****************************************************************NAKA*********************************************************//
         //Creating an instance of the Validations class
         Validations validate = new Validations();
+        //Creating an instance of the BinarySearchTree class
+        public static BinarySearchTree ServiceRequestTree = new BinarySearchTree();
         //****************************************************************NAKA*********************************************************//
         // A method to submit the report
         private void SubmitBtn_Click(object sender, RoutedEventArgs e)
@@ -72,6 +76,16 @@ namespace PROG_POE_PART_2.UserControls
             {
                 Issue issue = new Issue(location, category, description, picturesList);
                 IssueManager.Issues.Add(issue);
+                // Creating a new ServiceRequest
+                var newRequest = new ServiceRequest(SharedServiceRequests.Count + 1, location, description, "Pending", DateTime.Now, null);
+                newRequest.Images.AddRange(picturesList);
+                newRequest.Documents.AddRange(documentsList);
+                newRequest.AssignRandomStatus();
+
+                // Adding the new request to the shared collection
+                SharedServiceRequests.Add(newRequest);
+                // Adding the new request to the binary search tree
+                ServiceRequestTree.Insert(newRequest);
                 informationlbl.Foreground = new SolidColorBrush(Colors.Green);
                 informationlbl.Content = "Report Submitted Successfully";
                 ClearBtn_Click(sender, e);
@@ -493,5 +507,6 @@ namespace PROG_POE_PART_2.UserControls
             // Update progress bar value
             CompletionPrograsssBar.Value = completedFields;
         }
+        //****************************************************************NAKA*********************************************************//
     }
 }
