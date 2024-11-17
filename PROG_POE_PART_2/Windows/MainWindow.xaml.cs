@@ -1,5 +1,4 @@
-﻿
-using PROG_POE_PART_2.UserControls;
+﻿using PROG_POE_PART_2.UserControls;
 using PROG_POE_PART_2.Windows;
 using System;
 using System.Collections.Generic;
@@ -39,6 +38,7 @@ namespace PROG_POE_PART_2
                 mainContent.Children.Add(eventsControl);
             }
         }
+
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ButtonState == MouseButtonState.Pressed)
@@ -57,11 +57,13 @@ namespace PROG_POE_PART_2
                 }
             }
         }
-        //A method to close the application
+
+        // A method to close the application
         private void ListViewItem_Selected(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
+
         // A method to navigate to the EventsAndAnnouncements window
         private void NavigateToEventsAndAnnouncements(object sender, RoutedEventArgs e)
         {
@@ -69,6 +71,7 @@ namespace PROG_POE_PART_2
             this.Close();
             eventsAndAnnouncements.Show();
         }
+
         // A method to navigate to the HomeScreen window
         private void NavigateToHomeScreen(object sender, RoutedEventArgs e)
         {
@@ -76,6 +79,7 @@ namespace PROG_POE_PART_2
             this.Close();
             mainWindow.Show();
         }
+
         // A method to navigate to the ReportIssue window
         private void NavigateToReportIssue(object sender, RoutedEventArgs e)
         {
@@ -83,6 +87,7 @@ namespace PROG_POE_PART_2
             this.Close();
             reportIssue.Show();
         }
+
         // A method to navigate to the Community window
         private void NavigateToCommunity(object sender, RoutedEventArgs e)
         {
@@ -90,6 +95,7 @@ namespace PROG_POE_PART_2
             this.Close();
             community.Show();
         }
+
         // A method to navigate to the ServiceRequests window
         private void NavigateToServiceRequests(object sender, RoutedEventArgs e)
         {
@@ -99,4 +105,3 @@ namespace PROG_POE_PART_2
         }
     }
 }
-

@@ -1,4 +1,4 @@
-﻿using PROG_POE_PART_2.Classes;
+﻿using PROG_POE_PART_2.Classes; // Importing the necessary classes from the PROG_POE_PART_2 namespace
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,165 +10,133 @@ using System.Diagnostics;
 
 namespace PROG_POE_PART_2.UserControls
 {
+    // UserControl for handling Service Request functionality
     public partial class ServiceRequestControl : UserControl
     {
-        // Reference to the BinarySearchTree holding all service requests
-        private BinarySearchTree serviceRequestTree = ReportIssueControl.ServiceRequestTree;
+        //creating a private BinarySearchTree object
+        private BinarySearchTree serviceRequestTree = ReportIssueControl.ServiceRequestTree; 
 
-        // Constructor initializes the user control and populates the ListView with service requests
         public ServiceRequestControl()
         {
+            // Initializing the user control
             InitializeComponent();
-            PopulateListView();
+            // Populating the list view with service requests
+            PopulateListView(); 
         }
 
-        //****************************************************************NAKA*********************************************************//
-        /// <summary>
-        /// Populates the ListView with all service requests from the BinarySearchTree.
-        /// Uses in-order traversal to retrieve sorted requests and assigns icons to each request.
-        /// </summary>
+        //************************************************************************************NAKA*********************************************************************************************//
+        // Method to populate the ListView with all the service requests from the binary search tree
         private void PopulateListView()
         {
-            // Retrieve all service requests from the tree
+            // Getting all service requests from the tree
             var requests = GetAllRequests(serviceRequestTree.Root);
-
-            // Assign icons to each request
-            foreach (var request in requests)
-            {
-                AssignIcons(request);
-            }
-
-            // Bind the populated list of requests to the ListView
-            listViewServiceRequests.ItemsSource = requests;
+            // Assigning icons to the service requests
+            requests.ForEach(AssignIcons); 
+            listViewServiceRequests.ItemsSource = requests; 
         }
 
-        //****************************************************************NAKA*********************************************************//
-        /// <summary>
-        /// Recursively retrieves all service requests from the BinarySearchTree in sorted order.
-        /// </summary>
-        /// <param name="node">The current node in the BinarySearchTree.</param>
-        /// <returns>A list of all service requests in sorted order by their IDs.</returns>
+        //************************************************************************************NAKA*********************************************************************************************//
+        // Method to retrieve all service requests from the binary search tree using in-order traversal
         private List<ServiceRequest> GetAllRequests(ServiceRequestNode node)
         {
+            // List to store the service requests
             var requests = new List<ServiceRequest>();
+            // Stack to store the nodes
+            var stack = new Stack<ServiceRequestNode>(); 
+            var currentNode = node;
 
-            // Perform in-order traversal: left -> root -> right
-            if (node != null)
+            // Traversing while there are nodes to visit
+            while (currentNode != null || stack.Any()) 
             {
-                requests.AddRange(GetAllRequests(node.Left)); // Traverse the left subtree
-                requests.Add(node.Data);                     // Add the current node's data
-                requests.AddRange(GetAllRequests(node.Right)); // Traverse the right subtree
+                while (currentNode != null) 
+                {
+                    // Pushing the current node to the stack
+                    stack.Push(currentNode);
+                    // Moving to the left child
+                    currentNode = currentNode.Left; 
+                }
+                // Popping the node from the stack
+                currentNode = stack.Pop();
+                // Adding the service request to the list
+                requests.Add(currentNode.Data); 
+                currentNode = currentNode.Right; 
             }
 
-            return requests;
+            return requests; 
         }
 
-        //****************************************************************NAKA*********************************************************//
-        /// <summary>
-        /// Assigns icons to the video files in a service request.
-        /// This updates the video file paths to reference a default video icon image.
-        /// </summary>
-        /// <param name="request">The service request to update.</param>
+        //************************************************************************************NAKA*********************************************************************************************//
+        // Method to assign icons to service requests
         private void AssignIcons(ServiceRequest request)
         {
-            // Update each video entry with the path to the video icon
-            for (int i = 0; i < request.Videos.Count; i++)
-            {
-                request.Videos[i] = "pack://application:,,,/Images/VideoIcon.png";
-            }
+            // Assigning the video icon to all videos associated with the service request
+            request.Videos = request.Videos.Select(v => "pack://application:,,,/Images/VideoIcon.png").ToList();
         }
 
-        //****************************************************************NAKA*********************************************************//
-        /// <summary>
-        /// Handles the click event for the search button. Searches for a service request by its ID
-        /// and updates the ListView with the result.
-        /// </summary>
-        /// <param name="sender">The search button.</param>
-        /// <param name="e">Event arguments.</param>
+        // Event handler for the Search button click
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            // Validate and parse the input ID
+            // Try to parse the search ID input as an integer
             if (int.TryParse(txtSearchId.Text, out int id))
             {
-                // Search for the service request by ID
-                var result = serviceRequestTree.Search(id);
-
-                if (result != null)
+                // Searching for the service request with the entered ID
+                var result = serviceRequestTree.Search(id); 
+                if (result != null) 
                 {
-                    // If found, assign icons and display the request
+                    // Assign icons to the service request
                     AssignIcons(result);
-                    listViewServiceRequests.ItemsSource = new List<ServiceRequest> { result };
+                    // Displaying the service request in the ListView
+                    listViewServiceRequests.ItemsSource = new List<ServiceRequest> { result }; 
                 }
                 else
                 {
-                    // Show an error message if the request is not found
+                    // Show an error message if the service request is not found
                     MessageBox.Show("Service request not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
             {
-                // Show an error message if the input is invalid
+                // Show an error message if the entered ID is not a valid number
                 MessageBox.Show("Please enter a valid numeric ID.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        //****************************************************************NAKA*********************************************************//
-        /// <summary>
-        /// Handles the click event for the filter button. Filters service requests based on their status
-        /// and updates the ListView with the filtered results.
-        /// </summary>
-        /// <param name="sender">The filter button.</param>
-        /// <param name="e">Event arguments.</param>
+        //************************************************************************************NAKA*********************************************************************************************//
+        // Event handler for the Filter button click
+        // Filters the service requests based on their status
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
-            // Get the selected status from the ComboBox
+            // Get the selected status from the combo box
             var selectedStatus = (cmbFilterStatus.SelectedItem as ComboBoxItem)?.Content.ToString();
+            var requests = GetAllRequests(serviceRequestTree.Root); // Get all service requests from the tree
 
-            if (selectedStatus == "All")
+            if (selectedStatus != "All") // If a specific status is selected
             {
-                // If "All" is selected, display all service requests
-                PopulateListView();
+                // Filter the service requests by the selected status
+                requests = requests.Where(r => r.Status == selectedStatus).ToList();
             }
-            else
-            {
-                // Filter requests based on the selected status
-                var requests = GetAllRequests(serviceRequestTree.Root)
-                               .Where(r => r.Status == selectedStatus)
-                               .ToList();
 
-                // Assign icons to the filtered requests
-                foreach (var request in requests)
-                {
-                    AssignIcons(request);
-                }
-
-                // Update the ListView with the filtered requests
-                listViewServiceRequests.ItemsSource = requests;
-            }
+            requests.ForEach(AssignIcons); // Assign icons to the filtered service requests
+            listViewServiceRequests.ItemsSource = requests; // Set the ListView data source to the filtered requests
         }
 
-        //****************************************************************NAKA*********************************************************//
-        /// <summary>
-        /// Handles the click event for the document text block. Attempts to open the document
-        /// associated with the clicked text block.
-        /// </summary>
-        /// <param name="sender">The TextBlock representing a document.</param>
-        /// <param name="e">Event arguments.</param>
+        //************************************************************************************NAKA*********************************************************************************************//
+        // Event handler for when the user clicks on a document path (TextBlock)
         private void DocumentTextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            // Check if the sender is a TextBlock (document path)
             if (sender is TextBlock textBlock)
             {
-                // Get the document path from the TextBlock's text
-                string documentPath = textBlock.Text;
-
+                // Getting the document path from the TextBlock
+                string documentPath = textBlock.Text; 
                 try
                 {
-                    // Attempt to open the document using the default application
+                    // Try to open the document using the default application
                     Process.Start(new ProcessStartInfo(documentPath) { UseShellExecute = true });
                 }
                 catch (Exception ex)
                 {
-                    // Show an error message if the document could not be opened
+                    // Show an error message if the document cannot be opened
                     MessageBox.Show($"Unable to open document: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }

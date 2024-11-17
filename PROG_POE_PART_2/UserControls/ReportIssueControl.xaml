@@ -6,81 +6,68 @@
              xmlns:local="clr-namespace:PROG_POE_PART_2.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <Grid>
-        <Grid.Background>
-            <SolidColorBrush Color="#FFB6C899"/>
-        </Grid.Background>
+    <Viewbox Stretch="Fill">
+        <Canvas Width="800" Height="600">
+            <Canvas.Background>
+                <SolidColorBrush Color="#FFB6C899"/>
+            </Canvas.Background>
 
-        <!-- Define rows and columns for proportional resizing -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
+            <!-- Progress Bar at the top -->
+            <ProgressBar x:Name="CompletionPrograsssBar" Width="800" Height="30" Canvas.Top="-2" HorizontalAlignment="Center" VerticalAlignment="Top" />
 
-        <!-- Progress Bar at the top, spanning columns -->
-        <ProgressBar x:Name="CompletionPrograsssBar" Grid.Row="0" Grid.ColumnSpan="3" Height="25" Margin="10,2,10,76" />
+            <!-- Main title label -->
+            <Label x:Name="label" Content="REPORT ISSUE" FontFamily="Bahnschrift Light" FontSize="48"
+                   Canvas.Left="200" Canvas.Top="50" HorizontalAlignment="Center" />
 
-        <!-- Main title label -->
-        <Label x:Name="label" Content="REPORT ISSUE" FontFamily="Bahnschrift Light" FontSize="48"
-               HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Margin="0,35,0,0" />
+            <!-- Enter Location Label and StackPanel for inputs -->
+            <Label x:Name="label1" Content="Enter Location:" FontFamily="Berlin Sans FB Demi" FontSize="24" FontWeight="Bold"
+                   Canvas.Left="10" Canvas.Top="150" HorizontalAlignment="Right"/>
 
-        <!-- Enter Location Label and StackPanel for inputs -->
-        <Label x:Name="label1" Content="Enter Location:" FontFamily="Berlin Sans FB Demi" FontSize="24" FontWeight="Bold"
-               Grid.Row="1" Grid.Column="0" Margin="10" HorizontalAlignment="Right"/>
+            <StackPanel Orientation="Vertical" Canvas.Left="243" Canvas.Top="112" HorizontalAlignment="Left" VerticalAlignment="Center" Width="286" Height="320">
+                <Label x:Name="locationErrorlbl" Content="" FontWeight="Bold" FontStyle="Italic" Foreground="Black"/>
+                <TextBox x:Name="locationTxt" Text="" Foreground="Gray" FontWeight="Bold" Height="43" Margin="0,10,0,0"/>
 
-        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Margin="10">
-            <Label x:Name="locationErrorlbl" Content="" FontWeight="Bold" FontStyle="Italic" Foreground="Black"/>
-            <TextBox x:Name="locationTxt" Text="" Foreground="Gray" FontWeight="Bold" Height="43" Margin="0,10,0,0"/>
+                <Label x:Name="categoryErrorlbl" Content="" FontWeight="Bold" FontStyle="Italic" Foreground="Red" Margin="0,10,0,0"/>
+                <ComboBox x:Name="CategoryCmbx" SelectionChanged="CategoryCmbx_SelectionChanged" Height="42" Margin="0,10,0,0">
+                    <ComboBoxItem Content="Select Category" IsSelected="True" IsEnabled="False"/>
+                </ComboBox>
 
-            <Label x:Name="categoryErrorlbl" Content="" FontWeight="Bold" FontStyle="Italic" Foreground="Red" Margin="0,10,0,0"/>
-            <ComboBox x:Name="CategoryCmbx" SelectionChanged="CategoryCmbx_SelectionChanged" Height="42" Margin="0,10,0,0">
-                <ComboBoxItem Content="Select Category" IsSelected="True" IsEnabled="False"/>
-            </ComboBox>
+                <Label x:Name="descriptionErrorlbl" Content="" FontWeight="Bold" FontStyle="Italic" Foreground="Red" Margin="0,10,0,0"/>
+                <TextBox x:Name="descriptionTxt" Text="" TextWrapping="Wrap" AcceptsReturn="True" Foreground="Gray" FontWeight="Bold" Height="69" Margin="0,10,0,0"/>
+            </StackPanel>
 
-            <Label x:Name="descriptionErrorlbl" Content="" FontWeight="Bold" FontStyle="Italic" Foreground="Red" Margin="0,10,0,0"/>
-            <TextBox x:Name="descriptionTxt" Text="" TextWrapping="Wrap" AcceptsReturn="True" Foreground="Gray" FontWeight="Bold" Height="69" Margin="0,10,0,0"/>
-        </StackPanel>
+            <!-- Select Category and Enter Description Labels -->
+            <Label x:Name="label1_Copy" Content="Select Category:" FontFamily="Berlin Sans FB Demi" FontSize="24" FontWeight="Bold"
+                   Canvas.Left="10" Canvas.Top="250" HorizontalAlignment="Right"/>
+            <Label x:Name="label1_Copy1" Content="Enter Description:" FontFamily="Berlin Sans FB Demi" FontSize="24" FontWeight="Bold"
+                   Canvas.Left="10" Canvas.Top="350" HorizontalAlignment="Right"/>
 
-        <!-- Select Category and Enter Description Labels -->
-        <Label x:Name="label1_Copy" Content="Select Category:" FontFamily="Berlin Sans FB Demi" FontSize="24" FontWeight="Bold"
-               Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="10,80,10,0"/>
-        <Label x:Name="label1_Copy1" Content="Enter Description:" FontFamily="Berlin Sans FB Demi" FontSize="24" FontWeight="Bold"
-               Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="10,170,10,0"/>
+            <!-- ScrollViewer for Pictures -->
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="200" Height="183"
+                          Canvas.Left="577" Canvas.Top="147">
+                <WrapPanel x:Name="Pictures" Orientation="Vertical"/>
+            </ScrollViewer>
 
-        <!-- ScrollViewer for Pictures -->
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="2"
-              Margin="10" VerticalAlignment="Top" Height="183">
-            <WrapPanel x:Name="Pictures" Orientation="Vertical"/>
-        </ScrollViewer>
+            <!-- Upload Message Label and Upload Progress Bar -->
+            <Label x:Name="uploadMessagelbl" Content="" FontWeight="Bold" FontStyle="Italic" Foreground="#FFFFF900"
+                   Canvas.Left="600" Canvas.Top="350"/>
+            <ProgressBar x:Name="UploadProgressBar" Width="200" Height="9" Canvas.Left="577" Canvas.Top="338" HorizontalAlignment="Center" VerticalAlignment="Top" />
 
+            <!-- Buttons -->
+            <Button x:Name="AddPictureBtn" Content="Add Pic/Doc🖼️" FontWeight="Bold" Width="146" Click="AddPictureBtn_Click"
+                    Canvas.Left="603" Canvas.Top="356" Height="36"/>
+            <Button x:Name="SubmitBtn" Content="Submit👍" FontWeight="Bold" FontSize="16" Background="#FF0CF600"
+                    Click="SubmitBtn_Click" Width="128" Canvas.Left="651" Canvas.Top="478" Height="37" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="ClearBtn" Content="Clear🗑️" FontWeight="Bold" FontSize="16" Background="#FFE0FF00"
+                    Click="ClearBtn_Click" Width="104" Canvas.Left="526" Canvas.Top="475" Height="37" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="InforBtn" Content="" Click="InforBtn_Click" Width="53" Canvas.Left="448" Canvas.Top="469" Height="43">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/QuestionMarkIcon.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
 
-
-        <!-- Upload Message Label and Upload Progress Bar -->
-        <Label x:Name="uploadMessagelbl" Content="" FontWeight="Bold" FontStyle="Italic" Foreground="#FFFFF900"
-               Grid.Row="1" Grid.Column="2" Margin="10,0,0,10" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="UploadProgressBar" Grid.Row="1" Grid.Column="2" Margin="10,220,10,208" />
-
-        <!-- Buttons -->
-        <Button x:Name="AddPictureBtn" Content="Add Pic/Doc🖼️" FontWeight="Bold" Width="Auto" Click="AddPictureBtn_Click"
-                Grid.Row="1" Grid.Column="2" Margin="10,250,10,152"/>
-        <Button x:Name="SubmitBtn" Content="Submit👍" FontWeight="Bold" FontSize="16" Background="#FF0CF600"
-                Click="SubmitBtn_Click" Width="Auto" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="10"/>
-        <Button x:Name="ClearBtn" Content="Clear🗑️" FontWeight="Bold" FontSize="16" Background="#FFE0FF00"
-                Click="ClearBtn_Click" Width="Auto" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="10"/>
-        <Button x:Name="InforBtn" Content="" Click="InforBtn_Click" Grid.Row="2" Grid.Column="1"
-                HorizontalAlignment="Left" Width="49" Margin="215,10,0,10">
-            <Button.Background>
-                <ImageBrush ImageSource="/Images/QuestionMarkIcon.png" Stretch="Uniform"/>
-            </Button.Background>
-        </Button>
-
-        <!-- Information Label at the bottom -->
-        <Label x:Name="informationlbl" FontStyle="Italic" Foreground="Blue" Grid.Row="2" Grid.Column="0" Margin="10,10,10,10"/>
-    </Grid>
+            <!-- Information Label at the bottom -->
+            <Label x:Name="informationlbl" FontStyle="Italic" Foreground="Blue" Canvas.Left="19" Canvas.Top="467"/>
+        </Canvas>
+    </Viewbox>
 </UserControl>

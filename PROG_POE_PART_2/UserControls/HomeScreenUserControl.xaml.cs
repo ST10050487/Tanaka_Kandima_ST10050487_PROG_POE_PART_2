@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PROG_POE_PART_2.UserControls
 {
@@ -27,13 +28,27 @@ namespace PROG_POE_PART_2.UserControls
         {
             InitializeComponent();
             this.DataContext = this;
-
+            // Initialize current date and time
+            InitializeDateTimeDisplay();
             // Load and display default recommended events directly in the constructor
             List<Event> defaultRecommendedEvents = LoadDefaultRecommendations();
             DisplayRecommendations(defaultRecommendedEvents);
             LoadIssues();
         }
-
+        private void InitializeDateTimeDisplay()
+        {
+            // Set up a dispatcher timer to update the current date and time every second
+            DispatcherTimer timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            timer.Tick += (sender, args) =>
+            {
+                // Update the TextBlock with the current date and time
+                currentDateTimeTextBlock.Text = DateTime.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss");
+            };
+            timer.Start();
+        }
         public List<Event> LoadDefaultRecommendations()
         {
             List<Event> allEvents = new List<Event>(); // Ensure allEvents is initialized
@@ -54,12 +69,12 @@ namespace PROG_POE_PART_2.UserControls
             if (IssueManager.Issues == null || !IssueManager.Issues.Any())
             {
                 noIssuesMessage.Visibility = Visibility.Visible;
-                reportedIssuesListView.Visibility = Visibility.Collapsed; 
+                reportedIssuesListView.Visibility = Visibility.Collapsed;
             }
             else
             {
-                noIssuesMessage.Visibility = Visibility.Collapsed; 
-                reportedIssuesListView.Visibility = Visibility.Visible; 
+                noIssuesMessage.Visibility = Visibility.Collapsed;
+                reportedIssuesListView.Visibility = Visibility.Visible;
             }
         }
 

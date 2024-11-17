@@ -188,7 +188,6 @@
                 </ListView>
             </StackPanel>
         </Grid>
-
         <!-- Responsive HomeScreen UserControl -->
         <UserControls:HomeScreenUserControl Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0"/>
     </Grid>

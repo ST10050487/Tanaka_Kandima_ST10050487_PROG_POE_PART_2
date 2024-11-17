@@ -15,7 +15,7 @@ namespace PROG_POE_PART_2.Classes
             Root = InsertAVL(Root, request);
         }
 
-        private int Height(ServiceRequestNode node) => node == null ? 0 : node.Height;
+        private int Height(ServiceRequestNode node) => node?.Height ?? 0;
 
         private int GetBalanceFactor(ServiceRequestNode node) =>
             node == null ? 0 : Height(node.Left) - Height(node.Right);
@@ -98,10 +98,7 @@ namespace PROG_POE_PART_2.Classes
             if (node == null || node.Data.Id == id)
                 return node?.Data;
 
-            if (id < node.Data.Id)
-                return Search(node.Left, id);
-            else
-                return Search(node.Right, id);
+            return id < node.Data.Id ? Search(node.Left, id) : Search(node.Right, id);
         }
     }
 }
