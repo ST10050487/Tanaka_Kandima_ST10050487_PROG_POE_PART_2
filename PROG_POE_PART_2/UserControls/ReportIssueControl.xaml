@@ -57,9 +57,9 @@
             <Button x:Name="AddPictureBtn" Content="Add Pic/Doc🖼️" FontWeight="Bold" Width="146" Click="AddPictureBtn_Click"
                     Canvas.Left="603" Canvas.Top="356" Height="36"/>
             <Button x:Name="SubmitBtn" Content="Submit👍" FontWeight="Bold" FontSize="16" Background="#FF0CF600"
-                    Click="SubmitBtn_Click" Width="128" Canvas.Left="651" Canvas.Top="478" Height="37" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    Click="SubmitBtn_Click" Width="102" Canvas.Left="648" Canvas.Top="478" Height="37" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Button x:Name="ClearBtn" Content="Clear🗑️" FontWeight="Bold" FontSize="16" Background="#FFE0FF00"
-                    Click="ClearBtn_Click" Width="104" Canvas.Left="526" Canvas.Top="475" Height="37" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    Click="ClearBtn_Click" Width="101" Canvas.Left="526" Canvas.Top="475" Height="37" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Button x:Name="InforBtn" Content="" Click="InforBtn_Click" Width="53" Canvas.Left="448" Canvas.Top="469" Height="43">
                 <Button.Background>
                     <ImageBrush ImageSource="/Images/QuestionMarkIcon.png" Stretch="Uniform"/>

@@ -6,67 +6,67 @@
              xmlns:local="clr-namespace:PROG_POE_PART_2.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
-    <Grid>
-        <Grid.Background>
-            <SolidColorBrush Color="#FFB6C899"/>
-        </Grid.Background>
-        <TextBlock Text="Events and Announcements" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30" FontWeight="Bold" Margin="209,5,0,0" Height="34"/>
-        <Grid Margin="0,106,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="467*"/>
-                <ColumnDefinition Width="333*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBox x:Name="searchBox" Grid.Column="0" Margin="1,-4,204,0" Height="30" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" Text="Search" Background="#FFC3C3C3" TextChanged="searchBox_TextChanged"/>
-            <Image Source="/Images/SearchIcon.png" Margin="229,-1,209,470" RenderTransformOrigin="0.94,-0.3"/>
-            <ComboBox x:Name="categoryCmbBox" HorizontalAlignment="Left" Margin="282,-2,0,0" VerticalAlignment="Top" Width="136" Height="28" SelectionChanged="CategoryComboBox_SelectionChanged"/>
-            <DatePicker x:Name="startDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="12,4,0,0" VerticalAlignment="Top" Width="99"/>
-            <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="431,7,0,0" TextWrapping="Wrap" Text="From" VerticalAlignment="Top" Grid.ColumnSpan="2" FontWeight="Bold" FontFamily="Arial Black" FontSize="18"/>
-        </Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="18,50,0,0" TextWrapping="Wrap" Text="Events" VerticalAlignment="Top" FontWeight="Bold" FontSize="22"/>
-        <ListView x:Name="eventsList" ItemsSource="{Binding Events}" Margin="0,142,391,2" Width="Auto" BorderThickness="0" d:ItemsSource="{d:SampleData ItemCount=5}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="5" Margin="10" Padding="10">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Orientation="Vertical" Grid.Column="0">
-                                <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Foreground="#333333"/>
-                                <TextBlock Text="{Binding Category}" FontSize="14" Foreground="#666666"/>
-                                <TextBlock Text="{Binding Date, StringFormat='{}{0:MMM dd, yyyy}'}" FontSize="14" Foreground="#999999"/>
-                                <TextBlock Text="{Binding Venue}" FontSize="14" Foreground="#999999"/>
+    <Viewbox Stretch="Fill">
+        <Canvas Width="800" Height="600">
+            <Canvas.Background>
+                <SolidColorBrush Color="#FFB6C899"/>
+            </Canvas.Background>
+
+            <TextBlock Text="Events and Announcements" FontSize="30" FontWeight="Bold" Canvas.Left="209" Canvas.Top="5" Height="34"/>
+
+            <TextBox x:Name="searchBox" Width="200" Height="30" Canvas.Left="4" Canvas.Top="102" BorderBrush="Black" BorderThickness="1" Text="Search" Background="#FFC3C3C3" TextChanged="searchBox_TextChanged"/>
+            <Image Source="/Images/SearchIcon.png" Width="30" Height="30" Canvas.Left="171" Canvas.Top="101" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <ComboBox x:Name="categoryCmbBox" Width="136" Height="28" Canvas.Left="221" Canvas.Top="104" SelectionChanged="CategoryComboBox_SelectionChanged" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <DatePicker x:Name="startDatePicker" Width="99" Canvas.Left="483" Canvas.Top="116"/>
+            <TextBlock x:Name="textBlock2" Text="From" FontWeight="Bold" FontFamily="Arial Black" FontSize="18" Canvas.Left="427" Canvas.Top="120"/>
+
+            <TextBlock x:Name="textBlock" Text="Events" FontWeight="Bold" FontSize="22" Canvas.Left="4" Canvas.Top="148" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <ListView x:Name="eventsList" Width="409" Height="413" Canvas.Left="1" Canvas.Top="180" BorderThickness="0" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="5" Margin="10" Padding="10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Vertical" Grid.Column="0">
+                                    <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Foreground="#333333"/>
+                                    <TextBlock Text="{Binding Category}" FontSize="14" Foreground="#666666"/>
+                                    <TextBlock Text="{Binding Date, StringFormat='{}{0:MMM dd, yyyy}'}" FontSize="14" Foreground="#999999"/>
+                                    <TextBlock Text="{Binding Venue}" FontSize="14" Foreground="#999999"/>
+                                </StackPanel>
+                                <Image Source="/Assets/sample_thumbnail.png" Width="80" Height="80" Grid.Column="1" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <TextBlock x:Name="textBlock_Copy" Text="Announcements" FontWeight="Bold" FontSize="22" Canvas.Left="431" Canvas.Top="150" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <ListView x:Name="announcementsList" Width="380" Height="413" Canvas.Left="417" Canvas.Top="178" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,20,0,20">
+                            <Grid Width="60" Height="60" HorizontalAlignment="Left" Margin="0,0,10,0">
+                                <Ellipse Fill="#3399FF" Width="50" Height="50"/>
+                                <TextBlock Text="{Binding Time, StringFormat='{}{0:hh\\:mm tt}'}" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                            <Rectangle Width="2" Fill="Gray" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="30,60,0,0"/>
+                            <StackPanel Margin="70,0,0,0">
+                                <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold" Foreground="#333333"/>
+                                <TextBlock Text="{Binding Description}" FontSize="14" Foreground="#999999"/>
+                                <TextBlock Text="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" FontSize="12" FontWeight="Black" Foreground="#666666"/>
                             </StackPanel>
-                            <Image Source="/Assets/sample_thumbnail.png" Width="80" Height="80" Grid.Column="1" HorizontalAlignment="Right"/>
                         </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="564,48,0,0" TextWrapping="Wrap" Text="Announcements" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Width="184" Height="26"/>
-        <ListView x:Name="announcementsList" ItemsSource="{Binding Announcements}" Margin="433,143,6,4" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" d:ItemsSource="{d:SampleData ItemCount=5}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Margin="0,20,0,20">
-                        <Grid Width="60" Height="60" HorizontalAlignment="Left" Margin="0,0,10,0">
-                            <Ellipse Fill="#3399FF" Width="50" Height="50"/>
-                            <TextBlock Text="{Binding Time, StringFormat='{}{0:hh\\:mm tt}'}" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                        <Rectangle Width="2" Fill="Gray" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="30,60,0,0"/>
-                        <StackPanel Margin="70,0,0,0">
-                            <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold" Foreground="#333333"/>
-                            <TextBlock Text="{Binding Description}" FontSize="14" Foreground="#999999"/>
-                            <TextBlock Text="{Binding Date, StringFormat='{}{0:dd/MM/yyyy}'}" FontSize="12" FontWeight="Black" Foreground="#666666"/>
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <DatePicker x:Name="endDatePicker" HorizontalAlignment="Left" Margin="621,109,0,0" VerticalAlignment="Top" Width="99"/>
-        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="595,117,0,0" TextWrapping="Wrap" Text="To" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Arial Black" FontSize="18"/>
-        <Button x:Name="filterBtn" Content="Filter" HorizontalAlignment="Left" Margin="737,109,0,0" VerticalAlignment="Top" Height="22" Width="50" FontFamily="Bahnschrift" FontSize="14" FontWeight="Bold" Background="#FF1275CE" Click="FilterByDate_Click"/>
-        <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="464,86,0,0" TextWrapping="Wrap" Text="Filter Announcements by Date Range:" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="311"/>
-    </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <DatePicker x:Name="endDatePicker" Width="99" Canvas.Left="635" Canvas.Top="114" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock x:Name="textBlock1" Text="To" FontWeight="Bold" FontFamily="Arial Black" FontSize="18" Canvas.Left="606" Canvas.Top="116" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Button x:Name="filterBtn" Content="Filter" Width="50" Height="22" FontFamily="Bahnschrift" FontSize="14" FontWeight="Bold" Background="#FF1275CE" Canvas.Left="744" Canvas.Top="113" Click="FilterByDate_Click"/>
+            <TextBlock x:Name="textBlock3" Text="Filter Announcements by Date Range:" FontSize="14" FontWeight="Bold" Width="311" Canvas.Left="427" Canvas.Top="82"/>
+        </Canvas>
+    </Viewbox>
 </UserControl>
