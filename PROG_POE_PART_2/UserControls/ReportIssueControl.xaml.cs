@@ -69,6 +69,8 @@ namespace PROG_POE_PART_2.UserControls
         Validations validate = new Validations();
         //Creating an instance of the BinarySearchTree class
         public static BinarySearchTree ServiceRequestTree = new BinarySearchTree();
+        //Creating an instance of the BinarySearchTreeIssues class
+        public static BinarySearchTreeIssues IssueTree = new BinarySearchTreeIssues();
         //****************************************************************NAKA*********************************************************//
         // A method to submit the report
         private void SubmitBtn_Click(object sender, RoutedEventArgs e)
@@ -76,9 +78,22 @@ namespace PROG_POE_PART_2.UserControls
             GetUserInput();
             if ((validate.ValidateLocation(location) == true) && (validate.ValidateCategory(category) == true) && (validate.ValidateDescription(description) == true))
             {
-                Issue issue = new Issue(location, category, description, picturesList);
+                // Create a new Issue object and set its properties
+                Issue issue = new Issue(location, category, description, picturesList)
+                {
+                    Documents = documentsList.Select(doc => new DocumentItem
+                    {
+                        Name = System.IO.Path.GetFileName(doc),
+                        Icon = GetIconForExtension(System.IO.Path.GetExtension(doc)),
+                        Path = doc
+                    }).ToList(),
+                    Videos = new List<string>(videosList)
+                };
+
+                // Add the issue to the IssueManager
                 IssueManager.Issues.Add(issue);
-                // Creating a new ServiceRequest
+
+                // Create a new ServiceRequest
                 var newRequest = new ServiceRequest(SharedServiceRequests.Count + 1, location, description, "Pending", DateTime.Now, null);
                 newRequest.Images.AddRange(picturesList);
                 newRequest.Documents.AddRange(documentsList.Select(doc => new DocumentItem
@@ -87,20 +102,17 @@ namespace PROG_POE_PART_2.UserControls
                     Icon = GetIconForExtension(System.IO.Path.GetExtension(doc)),
                     Path = doc
                 }));
-                newRequest.Videos.AddRange(videosList); // Add video paths to the ServiceRequest
-
-                // Debug: Print video paths
-                foreach (var video in videosList)
-                {
-                    Debug.WriteLine($"Video Path: {video}");
-                }
-
+                newRequest.Videos.AddRange(videosList);
                 newRequest.AssignRandomStatus();
 
-                // Adding the new request to the shared collection
+                // Add the new request to the shared collection and binary search tree
                 SharedServiceRequests.Add(newRequest);
-                // Adding the new request to the binary search tree
                 ServiceRequestTree.Insert(newRequest);
+
+                // Add the issue to the binary search tree
+                IssueTree.Insert(issue);
+
+                Debug.WriteLine($"Issue inserted: {issue.Description}");
                 informationlbl.Foreground = new SolidColorBrush(Colors.Green);
                 informationlbl.Content = "Report Submitted Successfully";
                 ClearBtn_Click(sender, e);

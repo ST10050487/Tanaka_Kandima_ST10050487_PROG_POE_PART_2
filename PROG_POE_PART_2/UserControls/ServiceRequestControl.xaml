@@ -54,7 +54,7 @@
             </StackPanel>
 
             <!-- ListView to Display Service Requests -->
-            <ListView x:Name="listViewServiceRequests" Canvas.Left="10" Canvas.Top="100" Width="780" Height="340" BorderBrush="Gray" BorderThickness="1" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView x:Name="listViewServiceRequests" Canvas.Left="10" Canvas.Top="100" Width="780" Height="339" BorderBrush="Gray" BorderThickness="1" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel />

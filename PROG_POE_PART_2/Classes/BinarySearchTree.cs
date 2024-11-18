@@ -100,5 +100,22 @@ namespace PROG_POE_PART_2.Classes
 
             return id < node.Data.Id ? Search(node.Left, id) : Search(node.Right, id);
         }
+        // Method to perform in-order traversal
+        public List<ServiceRequest> InOrderTraversal()
+        {
+            var result = new List<ServiceRequest>();
+            InOrderTraversal(Root, result);
+            return result;
+        }
+
+        private void InOrderTraversal(ServiceRequestNode node, List<ServiceRequest> result)
+        {
+            if (node != null)
+            {
+                InOrderTraversal(node.Left, result);
+                result.Add(node.Data);
+                InOrderTraversal(node.Right, result);
+            }
+        }
     }
 }

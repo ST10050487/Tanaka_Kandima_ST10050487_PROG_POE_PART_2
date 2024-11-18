@@ -56,9 +56,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\BinarySearchTree.cs" />
+    <Compile Include="Classes\BinarySearchTreeIssues.cs" />
     <Compile Include="Classes\CustomPriorityQueue.cs" />
     <Compile Include="Classes\EventGraph.cs" />
     <Compile Include="Classes\EventHeap.cs" />
+    <Compile Include="Classes\IssueNode.cs" />
     <Compile Include="Classes\ServiceRequest.cs" />
     <Compile Include="Classes\ServiceRequestNode.cs" />
     <Compile Include="UserControls\CommunityControl.xaml.cs">
