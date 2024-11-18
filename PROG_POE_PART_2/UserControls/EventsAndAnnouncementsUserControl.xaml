@@ -14,6 +14,10 @@
 
             <TextBlock Text="Events and Announcements" FontSize="30" FontWeight="Bold" Canvas.Left="209" Canvas.Top="5" Height="34"/>
 
+            <!-- TextBlock for Current Date and Time -->
+            <TextBlock x:Name="currentDateTimeTextBlock" Canvas.Left="10" Canvas.Top="60"
+                       Text="{Binding CurrentDateTime}" FontSize="16" FontWeight="Bold" Foreground="#333333"/>
+
             <TextBox x:Name="searchBox" Width="200" Height="30" Canvas.Left="4" Canvas.Top="102" BorderBrush="Black" BorderThickness="1" Text="Search" Background="#FFC3C3C3" TextChanged="searchBox_TextChanged"/>
             <Image Source="/Images/SearchIcon.png" Width="30" Height="30" Canvas.Left="171" Canvas.Top="101" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <ComboBox x:Name="categoryCmbBox" Width="136" Height="28" Canvas.Left="221" Canvas.Top="104" SelectionChanged="CategoryComboBox_SelectionChanged" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -70,3 +74,4 @@
         </Canvas>
     </Viewbox>
 </UserControl>
+

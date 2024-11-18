@@ -1,14 +1,16 @@
 ﻿using PROG_POE_PART_2.Classes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace PROG_POE_PART_2.UserControls
 {
-    public partial class EventsAndAnnouncementsUserControl : UserControl
+    public partial class EventsAndAnnouncementsUserControl : UserControl, INotifyPropertyChanged
     {
         private Queue<Event> eventQueue = new Queue<Event>();
         private SortedDictionary<DateTime, List<Event>> sortedEvents = new SortedDictionary<DateTime, List<Event>>();
@@ -18,6 +20,19 @@ namespace PROG_POE_PART_2.UserControls
         private HomeScreenUserControl homeScreenUserControl;
         private List<Event> recommendedEvents = new List<Event>(); // Ensure recommendedEvents is initialized
         Recommendations recommendations = new Recommendations();
+
+        private DispatcherTimer timer;
+        private string currentDateTime;
+
+        public string CurrentDateTime
+        {
+            get { return currentDateTime; }
+            set
+            {
+                currentDateTime = value;
+                OnPropertyChanged("CurrentDateTime");
+            }
+        }
 
         public EventsAndAnnouncementsUserControl()
         {
@@ -31,6 +46,17 @@ namespace PROG_POE_PART_2.UserControls
             LoadAnnouncements();
             announcementsList.ItemsSource = AnnouncementsStack.ToList();
             DataContext = this;
+
+            // Initialize and start the timer
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            CurrentDateTime = DateTime.Now.ToString("F");
         }
 
         public EventsAndAnnouncementsUserControl(HomeScreenUserControl homeScreenControl)
@@ -47,6 +73,12 @@ namespace PROG_POE_PART_2.UserControls
             LoadAnnouncements();
             announcementsList.ItemsSource = AnnouncementsStack.ToList();
             DataContext = this;
+
+            // Initialize and start the timer
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Timer_Tick;
+            timer.Start();
         }
 
         private void LoadEvents()
@@ -189,5 +221,13 @@ namespace PROG_POE_PART_2.UserControls
             }
             categoryCmbBox.SelectedIndex = 0;
         }
+
+        // Implement INotifyPropertyChanged interface
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }
+

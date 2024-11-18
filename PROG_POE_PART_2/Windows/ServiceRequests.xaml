@@ -59,7 +59,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid Background="Black">
+    <Grid Background="#FFB6C899">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
