@@ -60,6 +60,8 @@ namespace PROG_POE_PART_2.UserControls
         private List<string> picturesList = new List<string>();
         // List to store paths of documents
         List<string> documentsList = new List<string>();
+        // List to store paths of videos
+        List<string> videosList = new List<string>();
         // Shared collection of service requests
         public static List<ServiceRequest> SharedServiceRequests = new List<ServiceRequest>();
         //****************************************************************NAKA*********************************************************//
@@ -83,8 +85,16 @@ namespace PROG_POE_PART_2.UserControls
                 {
                     Name = System.IO.Path.GetFileName(doc),
                     Icon = GetIconForExtension(System.IO.Path.GetExtension(doc)),
-                    Path = doc // Set the full path
+                    Path = doc
                 }));
+                newRequest.Videos.AddRange(videosList); // Add video paths to the ServiceRequest
+
+                // Debug: Print video paths
+                foreach (var video in videosList)
+                {
+                    Debug.WriteLine($"Video Path: {video}");
+                }
+
                 newRequest.AssignRandomStatus();
 
                 // Adding the new request to the shared collection
@@ -95,6 +105,9 @@ namespace PROG_POE_PART_2.UserControls
                 informationlbl.Content = "Report Submitted Successfully";
                 ClearBtn_Click(sender, e);
                 MessageBox.Show("Report Submitted Successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Clear the videosList after submission
+                videosList.Clear();
             }
             else
             {
@@ -103,7 +116,6 @@ namespace PROG_POE_PART_2.UserControls
                 MessageBox.Show("SUBMISSION FAILED", "ERROR⚠️", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-
 
         //****************************************************************NAKA*********************************************************//
         // A method to get the user input
@@ -263,6 +275,7 @@ namespace PROG_POE_PART_2.UserControls
                         itemPanel.Children.Add(fileNameTextBlock);
                         itemPanel.Children.Add(removeButton);
                         Pictures.Children.Add(itemPanel);
+                        videosList.Add(filePath); // Add video path to the list
                     }
 
                     UploadProgressBar.Visibility = Visibility.Visible;
@@ -271,6 +284,7 @@ namespace PROG_POE_PART_2.UserControls
                 });
             }
         }
+
 
         //****************************************************************NAKA*********************************************************//
         // Method to display document icon

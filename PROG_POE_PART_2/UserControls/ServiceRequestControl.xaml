@@ -91,8 +91,8 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" Margin="5">
-                                                <Image Width="50" Height="50" Margin="5" Source="pack://application:,,,/Images/VideoIcon.png" />
-                                                <TextBlock Text="{Binding}" Foreground="Green" TextDecorations="Underline" Cursor="Hand" VerticalAlignment="Center" />
+                                                <Image Width="50" Height="50" Source="pack://application:,,,/Images/VideoIcon.png" />
+                                                <TextBlock Text="{Binding}" FontSize="14" Margin="5,0,0,0" MouseLeftButtonUp="VideoTextBlock_MouseLeftButtonUp" />
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -102,6 +102,15 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+
+            <!-- No Service Request Filed Message -->
+            <TextBlock x:Name="noServiceRequestMessage" Text="No Service Request Filed" 
+                       FontSize="16" 
+                       FontWeight="Bold" 
+                       Foreground="Red" 
+                       Canvas.Left="300" 
+                       Canvas.Top="250" 
+                       Visibility="Collapsed" />
         </Canvas>
     </Viewbox>
 </UserControl>

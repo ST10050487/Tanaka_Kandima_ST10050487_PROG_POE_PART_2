@@ -33,6 +33,9 @@ namespace PROG_POE_PART_2.UserControls
             // Assigning icons to the service requests
             requests.ForEach(AssignIcons);
             listViewServiceRequests.ItemsSource = requests;
+
+            // Showing or hiding the "No Service Request Filed" message
+            noServiceRequestMessage.Visibility = requests.Any() ? Visibility.Collapsed : Visibility.Visible;
         }
 
         //************************************************************************************NAKA*********************************************************************************************//
@@ -69,8 +72,8 @@ namespace PROG_POE_PART_2.UserControls
         // Method to assign icons to service requests
         private void AssignIcons(ServiceRequest request)
         {
-            // Assigning the video icon to all videos associated with the service request
-            request.Videos = request.Videos.Select(v => "pack://application:,,,/Images/VideoIcon.png").ToList();
+            // Assigning the video paths to the videos associated with the service request
+            request.Videos = request.Videos.Select(v => v).ToList();
             // Assigning the document icon to all documents associated with the service request
             request.Documents = request.Documents.Select(d => new DocumentItem
             {
@@ -110,11 +113,14 @@ namespace PROG_POE_PART_2.UserControls
                     AssignIcons(result);
                     // Displaying the service request in the ListView
                     listViewServiceRequests.ItemsSource = new List<ServiceRequest> { result };
+                    noServiceRequestMessage.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     // Show an error message if the service request is not found
                     MessageBox.Show("Service request not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    listViewServiceRequests.ItemsSource = null;
+                    noServiceRequestMessage.Visibility = Visibility.Visible;
                 }
             }
             else
@@ -131,23 +137,28 @@ namespace PROG_POE_PART_2.UserControls
         {
             // Get the selected status from the combo box
             var selectedStatus = (cmbFilterStatus.SelectedItem as ComboBoxItem)?.Content.ToString();
-            var requests = GetAllRequests(serviceRequestTree.Root); // Get all service requests from the tree
+            // Getting all service requests from the tree
+            var requests = GetAllRequests(serviceRequestTree.Root);
 
-            if (selectedStatus != "All") // If a specific status is selected
+            if (selectedStatus != "All")
             {
                 // Filter the service requests by the selected status
                 requests = requests.Where(r => r.Status == selectedStatus).ToList();
             }
+            // Assign icons to the filtered service requests
+            requests.ForEach(AssignIcons);
+            // Setting the ListView data source to the filtered requests
+            listViewServiceRequests.ItemsSource = requests;
 
-            requests.ForEach(AssignIcons); // Assign icons to the filtered service requests
-            listViewServiceRequests.ItemsSource = requests; // Set the ListView data source to the filtered requests
+            // Showing or hiding the "No Service Request Filed" message
+            noServiceRequestMessage.Visibility = requests.Any() ? Visibility.Collapsed : Visibility.Visible;
         }
 
         //************************************************************************************NAKA*********************************************************************************************//
         // Event handler for when the user clicks on a document path (TextBlock)
         private void DocumentTextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // Check if the sender is a TextBlock (document path)
+            // Checking if the sender is a TextBlock (document path)
             if (sender is TextBlock textBlock)
             {
                 // Getting the document path from the TextBlock's DataContext
@@ -155,13 +166,37 @@ namespace PROG_POE_PART_2.UserControls
                 {
                     try
                     {
-                        // Try to open the document using the default application
+                        // Trying to open the document using the default application
                         Process.Start(new ProcessStartInfo(documentItem.Path) { UseShellExecute = true });
                     }
                     catch (Exception ex)
                     {
-                        // Show an error message if the document cannot be opened
+                        // Showing an error message if the document cannot be opened
                         MessageBox.Show($"Unable to open document: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+
+        //************************************************************************************NAKA*********************************************************************************************//
+        // Event handler for when the user clicks on a video name (TextBlock)
+        private void VideoTextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            // Checking if the sender is a TextBlock (video path)
+            if (sender is TextBlock textBlock)
+            {
+                // Getting the video path from the TextBlock's DataContext
+                if (textBlock.DataContext is string videoPath)
+                {
+                    try
+                    {
+                        // Trying to open the video using the default application
+                        Process.Start(new ProcessStartInfo(videoPath) { UseShellExecute = true });
+                    }
+                    catch (Exception ex)
+                    {
+                        // Showing an error message if the video cannot be opened
+                        MessageBox.Show($"Unable to open video: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
