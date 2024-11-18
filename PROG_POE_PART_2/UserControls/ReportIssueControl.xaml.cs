@@ -128,7 +128,6 @@ namespace PROG_POE_PART_2.UserControls
                 MessageBox.Show("SUBMISSION FAILED", "ERROR⚠️", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-
         //****************************************************************NAKA*********************************************************//
         // A method to get the user input
         public void GetUserInput()
