@@ -79,7 +79,12 @@ namespace PROG_POE_PART_2.UserControls
                 // Creating a new ServiceRequest
                 var newRequest = new ServiceRequest(SharedServiceRequests.Count + 1, location, description, "Pending", DateTime.Now, null);
                 newRequest.Images.AddRange(picturesList);
-                newRequest.Documents.AddRange(documentsList);
+                newRequest.Documents.AddRange(documentsList.Select(doc => new DocumentItem
+                {
+                    Name = System.IO.Path.GetFileName(doc),
+                    Icon = GetIconForExtension(System.IO.Path.GetExtension(doc)),
+                    Path = doc // Set the full path
+                }));
                 newRequest.AssignRandomStatus();
 
                 // Adding the new request to the shared collection
@@ -98,6 +103,7 @@ namespace PROG_POE_PART_2.UserControls
                 MessageBox.Show("SUBMISSION FAILED", "ERROR⚠️", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
 
         //****************************************************************NAKA*********************************************************//
         // A method to get the user input
@@ -506,6 +512,24 @@ namespace PROG_POE_PART_2.UserControls
 
             // Update progress bar value
             CompletionPrograsssBar.Value = completedFields;
+        }
+        private string GetIconForExtension(string extension)
+        {
+            switch (extension.ToLower())
+            {
+                case ".pdf":
+                    return "pack://application:,,,/Images/PdfIcon.png";
+                case ".doc":
+                case ".docx":
+                    return "pack://application:,,,/Images/WordIcon.png";
+                case ".xls":
+                case ".xlsx":
+                    return "pack://application:,,,/Images/ExcelIcon.png";
+                case ".txt":
+                    return "pack://application:,,,/Images/TextIcon.png";
+                default:
+                    return "pack://application:,,,/Images/DefaultIcon.png";
+            }
         }
         //****************************************************************NAKA*********************************************************//
     }

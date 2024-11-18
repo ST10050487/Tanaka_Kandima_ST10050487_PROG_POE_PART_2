@@ -14,14 +14,14 @@ namespace PROG_POE_PART_2.UserControls
     public partial class ServiceRequestControl : UserControl
     {
         //creating a private BinarySearchTree object
-        private BinarySearchTree serviceRequestTree = ReportIssueControl.ServiceRequestTree; 
+        private BinarySearchTree serviceRequestTree = ReportIssueControl.ServiceRequestTree;
 
         public ServiceRequestControl()
         {
             // Initializing the user control
             InitializeComponent();
             // Populating the list view with service requests
-            PopulateListView(); 
+            PopulateListView();
         }
 
         //************************************************************************************NAKA*********************************************************************************************//
@@ -31,8 +31,8 @@ namespace PROG_POE_PART_2.UserControls
             // Getting all service requests from the tree
             var requests = GetAllRequests(serviceRequestTree.Root);
             // Assigning icons to the service requests
-            requests.ForEach(AssignIcons); 
-            listViewServiceRequests.ItemsSource = requests; 
+            requests.ForEach(AssignIcons);
+            listViewServiceRequests.ItemsSource = requests;
         }
 
         //************************************************************************************NAKA*********************************************************************************************//
@@ -42,27 +42,27 @@ namespace PROG_POE_PART_2.UserControls
             // List to store the service requests
             var requests = new List<ServiceRequest>();
             // Stack to store the nodes
-            var stack = new Stack<ServiceRequestNode>(); 
+            var stack = new Stack<ServiceRequestNode>();
             var currentNode = node;
 
             // Traversing while there are nodes to visit
-            while (currentNode != null || stack.Any()) 
+            while (currentNode != null || stack.Any())
             {
-                while (currentNode != null) 
+                while (currentNode != null)
                 {
                     // Pushing the current node to the stack
                     stack.Push(currentNode);
                     // Moving to the left child
-                    currentNode = currentNode.Left; 
+                    currentNode = currentNode.Left;
                 }
                 // Popping the node from the stack
                 currentNode = stack.Pop();
                 // Adding the service request to the list
-                requests.Add(currentNode.Data); 
-                currentNode = currentNode.Right; 
+                requests.Add(currentNode.Data);
+                currentNode = currentNode.Right;
             }
 
-            return requests; 
+            return requests;
         }
 
         //************************************************************************************NAKA*********************************************************************************************//
@@ -71,8 +71,31 @@ namespace PROG_POE_PART_2.UserControls
         {
             // Assigning the video icon to all videos associated with the service request
             request.Videos = request.Videos.Select(v => "pack://application:,,,/Images/VideoIcon.png").ToList();
+            // Assigning the document icon to all documents associated with the service request
+            request.Documents = request.Documents.Select(d => new DocumentItem
+            {
+                Name = System.IO.Path.GetFileName(d.Name),
+                Icon = GetDocumentIcon(d.Name),
+                Path = d.Path
+            }).ToList();
         }
-
+        //************************************************************************************NAKA*********************************************************************************************//
+        // Method to get the icon for a document based on its file extension
+        private string GetDocumentIcon(string filePath)
+        {
+            string extension = System.IO.Path.GetExtension(filePath).ToLower();
+            switch (extension)
+            {
+                case ".pdf":
+                    return "pack://application:,,,/Images/PdfIcon.png";
+                case ".doc":
+                case ".docx":
+                    return "pack://application:,,,/PROG_POE_PART_2;component/Images/WordIcon.png";
+                default:
+                    return "pack://application:,,,/Images/DocumentsIcon.png";
+            }
+        }
+        //************************************************************************************NAKA*********************************************************************************************//
         // Event handler for the Search button click
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
@@ -80,13 +103,13 @@ namespace PROG_POE_PART_2.UserControls
             if (int.TryParse(txtSearchId.Text, out int id))
             {
                 // Searching for the service request with the entered ID
-                var result = serviceRequestTree.Search(id); 
-                if (result != null) 
+                var result = serviceRequestTree.Search(id);
+                if (result != null)
                 {
                     // Assign icons to the service request
                     AssignIcons(result);
                     // Displaying the service request in the ListView
-                    listViewServiceRequests.ItemsSource = new List<ServiceRequest> { result }; 
+                    listViewServiceRequests.ItemsSource = new List<ServiceRequest> { result };
                 }
                 else
                 {
@@ -127,17 +150,19 @@ namespace PROG_POE_PART_2.UserControls
             // Check if the sender is a TextBlock (document path)
             if (sender is TextBlock textBlock)
             {
-                // Getting the document path from the TextBlock
-                string documentPath = textBlock.Text; 
-                try
+                // Getting the document path from the TextBlock's DataContext
+                if (textBlock.DataContext is DocumentItem documentItem)
                 {
-                    // Try to open the document using the default application
-                    Process.Start(new ProcessStartInfo(documentPath) { UseShellExecute = true });
-                }
-                catch (Exception ex)
-                {
-                    // Show an error message if the document cannot be opened
-                    MessageBox.Show($"Unable to open document: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    try
+                    {
+                        // Try to open the document using the default application
+                        Process.Start(new ProcessStartInfo(documentItem.Path) { UseShellExecute = true });
+                    }
+                    catch (Exception ex)
+                    {
+                        // Show an error message if the document cannot be opened
+                        MessageBox.Show($"Unable to open document: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }

@@ -14,7 +14,7 @@ namespace PROG_POE_PART_2.Classes
         public DateTime CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
         public List<string> Images { get; set; }
-        public List<string> Documents { get; set; }
+        public List<DocumentItem> Documents { get; set; }
         public List<string> Videos { get; set; }
 
         public ServiceRequest(int id, string name, string description, string status, DateTime createdAt, DateTime? completedAt)
@@ -26,7 +26,7 @@ namespace PROG_POE_PART_2.Classes
             CreatedAt = createdAt;
             CompletedAt = completedAt;
             Images = new List<string>();
-            Documents = new List<string>();
+            Documents = new List<DocumentItem>();
             Videos = new List<string>();
         }
 
@@ -36,5 +36,12 @@ namespace PROG_POE_PART_2.Classes
             Status = Statuses[random.Next(Statuses.Length)];
         }
     }
-}
 
+    public class DocumentItem
+    {
+        public string Name { get; set; }
+        public string Icon { get; set; }
+        public string Path { get; set; }
+    }
+
+}
